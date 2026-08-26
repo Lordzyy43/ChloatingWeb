@@ -1,32 +1,7 @@
-export type CollectionProcess = {
-  title: string;
-  summary: string;
-  detail: string;
-};
-
-export type CollectionMediaSlot = {
-  kind: "image" | "video";
-  label: string;
-  caption: string;
-  note: string;
-  suggestedPath: string;
-};
-
-export type CollectionItem = {
-  slug: string;
-  name: string;
-  tag: string;
-  year: string;
-  intro: string;
-  impact: string;
-  palette: string[];
-  process: CollectionProcess[];
-  deliverables: string[];
-  heroLine: string;
-  heroStat: string;
-  mediaSlots: CollectionMediaSlot[];
-  detailSummary: string;
-};
+import type {
+  CollectionItem,
+  PortfolioProfile,
+} from "@/types";
 
 export const collections: CollectionItem[] = [
   {
@@ -89,6 +64,53 @@ export const collections: CollectionItem[] = [
         caption: "Best editorial image from the final shoot.",
         note: "Drop a still into /public/media/concrete-ritual-campaign.jpg",
         suggestedPath: "/media/concrete-ritual-campaign.jpg",
+      },
+    ],
+    gallery: [
+      {
+        kind: "video",
+        title: "Runway motion",
+        caption: "Hero footage untuk membuka mood koleksi.",
+        note: "Drop the strongest campaign reel or motion loop here.",
+        suggestedPath: "/media/concrete-ritual-hero.mp4",
+        tone: "hero",
+        layout: "hero",
+      },
+      {
+        kind: "image",
+        title: "Moodboard atlas",
+        caption: "Reference direction untuk texture, silhouette, dan tone.",
+        note: "Best for collage, reference board, or art-direction still.",
+        suggestedPath: "/media/concrete-ritual-moodboard.jpg",
+        tone: "reference",
+        layout: "tall",
+      },
+      {
+        kind: "image",
+        title: "Tech pack spread",
+        caption: "Flat documentation yang menunjukkan keseriusan produksi.",
+        note: "Use a clean spec-sheet, sketch sheet, or construction page.",
+        suggestedPath: "/media/concrete-ritual-tech-pack.jpg",
+        tone: "construction",
+        layout: "wide",
+      },
+      {
+        kind: "image",
+        title: "Detail textile",
+        caption: "Close-up bahan, jahitan, atau finishing yang paling kuat.",
+        note: "Use macro detail shots to elevate the tactile story.",
+        suggestedPath: "/media/concrete-ritual-detail.jpg",
+        tone: "texture",
+        layout: "square",
+      },
+      {
+        kind: "image",
+        title: "Campaign hero",
+        caption: "Frame final untuk dipakai brand deck atau cover page.",
+        note: "The most polished hero image from the final shoot.",
+        suggestedPath: "/media/concrete-ritual-campaign.jpg",
+        tone: "final",
+        layout: "wide",
       },
     ],
     detailSummary:
@@ -156,6 +178,53 @@ export const collections: CollectionItem[] = [
         suggestedPath: "/media/night-signal-campaign.jpg",
       },
     ],
+    gallery: [
+      {
+        kind: "video",
+        title: "Industrial reel",
+        caption: "Opening motion dengan tone dingin dan ritmis.",
+        note: "Drop a moody loop with hard lighting or city movement.",
+        suggestedPath: "/media/night-signal-hero.mp4",
+        tone: "hero",
+        layout: "hero",
+      },
+      {
+        kind: "image",
+        title: "Reflective moodboard",
+        caption: "Mood riset untuk warna gelap dan pantulan cahaya.",
+        note: "Works best as a reference collage or direction board.",
+        suggestedPath: "/media/night-signal-moodboard.jpg",
+        tone: "reference",
+        layout: "square",
+      },
+      {
+        kind: "image",
+        title: "Pocket study",
+        caption: "Detail technical untuk memperlihatkan engineering.",
+        note: "Use a close-up of pocket system, zipper, or seam work.",
+        suggestedPath: "/media/night-signal-construction.jpg",
+        tone: "construction",
+        layout: "tall",
+      },
+      {
+        kind: "image",
+        title: "Shadow frame",
+        caption: "Frame editorial dengan kontras tinggi.",
+        note: "Choose a final campaign still with strong silhouette.",
+        suggestedPath: "/media/night-signal-campaign.jpg",
+        tone: "final",
+        layout: "wide",
+      },
+      {
+        kind: "image",
+        title: "Utility spread",
+        caption: "Visual yang menjelaskan modularity koleksi.",
+        note: "Use a product spread or multi-angle frame.",
+        suggestedPath: "/media/night-signal-utility.jpg",
+        tone: "system",
+        layout: "strip",
+      },
+    ],
     detailSummary:
       "A cooler, more technical story that still reads luxury thanks to the refined layer system and sharp production notes.",
   },
@@ -219,6 +288,53 @@ export const collections: CollectionItem[] = [
         caption: "Select the cleanest final editorial image.",
         note: "Drop a still into /public/media/after-hours-campaign.jpg",
         suggestedPath: "/media/after-hours-campaign.jpg",
+      },
+    ],
+    gallery: [
+      {
+        kind: "video",
+        title: "Ambient motion",
+        caption: "Loop lembut untuk membuka sisi paling elegan koleksi.",
+        note: "Use warm movement footage or subtle handheld motion.",
+        suggestedPath: "/media/after-hours-hero.mp4",
+        tone: "hero",
+        layout: "hero",
+      },
+      {
+        kind: "image",
+        title: "Warm moodboard",
+        caption: "Tone malam yang lembut dan intimate.",
+        note: "Best for references, lights, and emotional texture.",
+        suggestedPath: "/media/after-hours-moodboard.jpg",
+        tone: "reference",
+        layout: "tall",
+      },
+      {
+        kind: "image",
+        title: "Fit study",
+        caption: "Menonjolkan jatuh kain dan proporsi.",
+        note: "Use an editorial image that clearly shows the silhouette.",
+        suggestedPath: "/media/after-hours-fit.jpg",
+        tone: "fit",
+        layout: "wide",
+      },
+      {
+        kind: "image",
+        title: "Close texture",
+        caption: "Detail material yang membuatnya terasa premium.",
+        note: "Macro textile and stitching details work best here.",
+        suggestedPath: "/media/after-hours-detail.jpg",
+        tone: "texture",
+        layout: "square",
+      },
+      {
+        kind: "image",
+        title: "Campaign frame",
+        caption: "Image final untuk cover lookbook atau deck.",
+        note: "Select the cleanest polished final campaign image.",
+        suggestedPath: "/media/after-hours-campaign.jpg",
+        tone: "final",
+        layout: "wide",
       },
     ],
     detailSummary:
@@ -286,12 +402,59 @@ export const collections: CollectionItem[] = [
         suggestedPath: "/media/assembly-line-launch.jpg",
       },
     ],
+    gallery: [
+      {
+        kind: "video",
+        title: "Catalog motion",
+        caption: "Motion opening yang bersih dan langsung terbaca.",
+        note: "Use a clear motion loop with soft shadows and neutral light.",
+        suggestedPath: "/media/assembly-line-hero.mp4",
+        tone: "hero",
+        layout: "hero",
+      },
+      {
+        kind: "image",
+        title: "System moodboard",
+        caption: "Referensi visual yang fokus pada retail logic.",
+        note: "Great for a grid of references, fit notes, and colorways.",
+        suggestedPath: "/media/assembly-line-moodboard.jpg",
+        tone: "reference",
+        layout: "wide",
+      },
+      {
+        kind: "image",
+        title: "Catalog frame",
+        caption: "Bentuk paling rapi untuk buyer deck dan e-commerce.",
+        note: "Use a centered, front-facing image with clean composition.",
+        suggestedPath: "/media/assembly-line-catalog.jpg",
+        tone: "catalog",
+        layout: "square",
+      },
+      {
+        kind: "image",
+        title: "Size / fit notes",
+        caption: "Menjelaskan scale dan kepraktisan produksi.",
+        note: "Works well as a fit study or measurement sheet.",
+        suggestedPath: "/media/assembly-line-fit.jpg",
+        tone: "system",
+        layout: "tall",
+      },
+      {
+        kind: "image",
+        title: "Launch frame",
+        caption: "Hero final untuk halaman pembuka project.",
+        note: "Choose the final polished retail-ready shot.",
+        suggestedPath: "/media/assembly-line-launch.jpg",
+        tone: "final",
+        layout: "wide",
+      },
+    ],
     detailSummary:
       "The commercial anchor of the portfolio, built to read clearly for brands that care about repeatable production.",
   },
 ];
 
-export const portfolioProfile = {
+export const portfolioProfile: PortfolioProfile = {
   name: "Cloating Studio",
   role: "Streetwear designer / visual direction / lookbook systems",
   location: "Indonesia",

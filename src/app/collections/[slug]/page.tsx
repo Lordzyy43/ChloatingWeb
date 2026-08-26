@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { CollectionCaseStudy } from "@/components/collection-case-study";
+import { CollectionCaseStudy } from "@/components/sections/collection-case-study";
 import { collections, getCollection } from "@/data/portfolio";
 
 type Params = Promise<{ slug: string }>;

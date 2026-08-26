@@ -1,14 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #080808;
-  --foreground: #f5f1ea;
-  --muted: #a49b90;
-  --surface: rgba(255, 255, 255, 0.06);
-  --surface-strong: rgba(255, 255, 255, 0.12);
-  --line: rgba(255, 255, 255, 0.14);
-  --accent: #d7b48a;
-  --accent-strong: #f2d3b5;
+  /* Dark Slate / Charcoal */
+  --background: #14171a;
+  /* Off-White / Clean Light Slate */
+  --foreground: #f0f2f5;
+  /* Cool Gray */
+  --muted: #8b95a1;
+
+  /* Ultra-subtle surfaces */
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-strong: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.12);
+
+  /* Bright Teal / Cyan */
+  --accent: #00b4b6;
+  --accent-strong: #00d6d8;
 }
 
 @theme inline {
@@ -32,26 +39,51 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   min-height: 100vh;
+  /* Gradient disesuaikan dengan tone Bright Teal (RGB: 0, 180, 182) */
   background-image:
-    radial-gradient(circle at top left, rgba(215, 180, 138, 0.16), transparent 28%),
-    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.08), transparent 22%),
-    linear-gradient(180deg, #0d0d0d 0%, #080808 35%, #050505 100%);
+    radial-gradient(
+      circle at top left,
+      rgba(0, 180, 182, 0.15),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 10%,
+      rgba(255, 255, 255, 0.05),
+      transparent 25%
+    ),
+    linear-gradient(180deg, #1a1e23 0%, #14171a 40%, #0d0f12 100%);
 }
 
+/* Garis grid dibuat lebih tipis dan transparan agar tidak mengganggu fokus visual */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 80px 80px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), black 25%, black 75%, rgba(0, 0, 0, 0.15));
-  opacity: 0.45;
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3),
+    black 20%,
+    black 80%,
+    rgba(0, 0, 0, 0.1)
+  );
+  opacity: 0.35;
 }
 
 ::selection {
-  background: rgba(215, 180, 138, 0.35);
+  background: rgba(0, 180, 182, 0.3);
   color: var(--foreground);
+}
+
+/* Sembunyikan scrollbar untuk class hide-scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
