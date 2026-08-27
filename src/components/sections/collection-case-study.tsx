@@ -1,18 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowUpRight,
-  Camera,
   ChevronRight,
-  Film,
   Layers3,
 } from "lucide-react";
 import { MotionConfig, motion, useReducedMotion } from "framer-motion";
 import { useMemo } from "react";
 import { collections } from "@/data/portfolio";
 import type { CollectionGalleryItem, CollectionItem } from "@/types";
+import { pexelsVisuals } from "@/data/pexels-visuals";
 
 type Props = {
   collection: CollectionItem;
@@ -23,58 +23,55 @@ const pageRise = {
   show: { opacity: 1, y: 0 },
 };
 
-const galleryLayoutClasses: Record<
+const galleryHeightClasses: Record<
   CollectionGalleryItem["layout"],
   string
 > = {
-  hero: "md:col-span-8 md:row-span-2 aspect-[4/5]",
-  wide: "md:col-span-7 aspect-[16/10]",
-  tall: "md:col-span-5 aspect-[3/4]",
-  square: "md:col-span-4 aspect-square",
-  strip: "md:col-span-12 aspect-[21/9]",
+  hero: "min-h-[28rem] sm:min-h-[34rem]",
+  wide: "min-h-[18rem] sm:min-h-[22rem]",
+  tall: "min-h-[24rem] sm:min-h-[28rem]",
+  square: "min-h-[20rem] sm:min-h-[24rem]",
+  strip: "min-h-[16rem] sm:min-h-[20rem]",
 };
 
 function MediaCard({
   kind,
   label,
-  caption,
-  note,
-  suggestedPath,
   accent,
+  imageUrl,
 }: {
   kind: "image" | "video";
   label: string;
-  caption: string;
-  note: string;
-  suggestedPath: string;
   accent: string;
+  imageUrl: string;
 }) {
   return (
-    <div className="group rounded-[1.5rem] border border-white/10 bg-[#080a0c] p-4 transition-colors hover:border-white/20">
-      <div className="relative overflow-hidden rounded-[1.1rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))]">
-        <div className="aspect-[4/5] p-4">
-          <div className="flex h-full flex-col justify-between rounded-[0.95rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_30%),linear-gradient(160deg,#111_0%,#0a0a0a_50%,#111_100%)] p-4">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-[9px] uppercase tracking-[0.4em] text-white/40">
-                  {label}
-                </p>
-                <p className="mt-2 max-w-[13rem] text-sm leading-relaxed text-white/75">
-                  {caption}
-                </p>
-              </div>
-              {kind === "video" ? (
-                <Film className="h-5 w-5 text-[var(--accent-strong)]" />
-              ) : (
-                <Camera className="h-5 w-5 text-[var(--accent-strong)]" />
-              )}
+    <div className="group rounded-[1.5rem] border border-white/10 bg-[#080a0c] p-3 transition-colors hover:border-white/20">
+      <div className="relative overflow-hidden rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))]">
+        <div className="aspect-[4/5]">
+          <Image
+            src={imageUrl}
+            alt={label}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 100vw"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.14)_40%,rgba(0,0,0,0.68)_100%)]" />
+          <div className="relative flex h-full flex-col justify-between p-4">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-[9px] uppercase tracking-[0.45em] text-white/40">
+                {label}
+              </p>
+              <p className="text-[9px] uppercase tracking-[0.4em] text-white/35">
+                {kind}
+              </p>
             </div>
 
             <div className="space-y-3">
-              <div className="h-32 rounded-[1rem] border border-white/10 bg-[linear-gradient(135deg,rgba(0,180,182,0.15),rgba(255,255,255,0.02))] transition-transform duration-500 group-hover:scale-[1.02]" />
+              <div className="h-40 rounded-[1rem] border border-white/10 bg-[linear-gradient(135deg,rgba(0,180,182,0.12),rgba(255,255,255,0.03),rgba(0,0,0,0.1))] transition-transform duration-500 group-hover:scale-[1.02]" />
               <div className="flex items-center justify-between">
                 <span className="text-[9px] uppercase tracking-[0.4em] text-white/40">
-                  {kind} slot
+                  slot
                 </span>
                 <span className="text-[9px] uppercase tracking-[0.4em] text-[var(--accent-strong)]">
                   {accent}
@@ -83,13 +80,7 @@ function MediaCard({
             </div>
           </div>
         </div>
-        <div className="absolute inset-x-4 bottom-4 rounded-full border border-white/10 bg-black/50 px-3 py-2 text-[9px] uppercase tracking-[0.3em] text-white/50 backdrop-blur-md">
-          {suggestedPath}
-        </div>
       </div>
-      <p className="mt-4 text-xs leading-relaxed tracking-wide text-white/50">
-        {note}
-      </p>
     </div>
   );
 }
@@ -97,34 +88,40 @@ function MediaCard({
 function GalleryCard({
   item,
   index,
+  imageUrl,
 }: {
   item: CollectionGalleryItem;
   index: number;
+  imageUrl: string;
 }) {
   const accentLabel =
     index === 0 ? "hero frame" : index === 1 ? "reference" : item.tone;
+  const tiltClass = index % 2 === 0 ? "rotate-[-0.5deg]" : "rotate-[0.5deg]";
 
   return (
     <article
-      className={`group relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#090a0b] ${galleryLayoutClasses[item.layout]}`}
+      className={`group relative mb-4 break-inside-avoid overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#090a0b] transition-transform duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/30 ${tiltClass} ${galleryHeightClasses[item.layout]}`}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_30%),linear-gradient(155deg,rgba(215,180,138,0.12),rgba(255,255,255,0.02),rgba(0,0,0,0.35))]" />
+      <Image
+        src={imageUrl}
+        alt={item.title}
+        fill
+        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+        sizes="(min-width: 1536px) 33vw, (min-width: 1280px) 30vw, (min-width: 640px) 45vw, 100vw"
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_30%),linear-gradient(155deg,rgba(215,180,138,0.08),rgba(255,255,255,0.02),rgba(0,0,0,0.55))]" />
       <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_25%,rgba(255,255,255,0.08)_50%,transparent_75%)] bg-[length:180%_100%] opacity-0 transition duration-700 group-hover:opacity-100" />
-      <div className="relative flex h-full flex-col justify-between p-4 sm:p-5">
+      <div className="absolute inset-x-0 top-0 h-10 border-b border-white/8 bg-black/20" />
+      <div className="relative flex h-full min-h-[18rem] flex-col justify-between p-4 sm:min-h-[22rem] sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[9px] uppercase tracking-[0.4em] text-white/45">
-              {item.title}
-            </p>
-            <p className="mt-2 max-w-sm text-xs leading-6 text-white/70">
-              {item.caption}
+            <p className="text-[9px] uppercase tracking-[0.5em] text-white/40">
+              Issue {String(index + 1).padStart(2, "0")}
             </p>
           </div>
-          {item.kind === "video" ? (
-            <Film className="h-5 w-5 text-[var(--accent-strong)]" />
-          ) : (
-            <Camera className="h-5 w-5 text-[var(--accent-strong)]" />
-          )}
+          <p className="text-[9px] uppercase tracking-[0.4em] text-white/35">
+            {item.kind}
+          </p>
         </div>
 
         <div className="mt-6 flex flex-1 items-end">
@@ -137,21 +134,9 @@ function GalleryCard({
                 {accentLabel}
               </span>
             </div>
-            <div className="mt-4 h-28 rounded-[1rem] border border-white/10 bg-[linear-gradient(135deg,rgba(0,180,182,0.15),rgba(255,255,255,0.04),rgba(0,0,0,0.1))] transition-transform duration-500 group-hover:scale-[1.015]" />
-            <div className="mt-4 flex items-center justify-between gap-3">
-              <p className="text-[9px] uppercase tracking-[0.35em] text-white/45">
-                {item.kind}
-              </p>
-              <span className="text-[9px] uppercase tracking-[0.35em] text-white/45">
-                {item.suggestedPath}
-              </span>
-            </div>
+            <div className="mt-4 h-40 rounded-[1rem] border border-white/10 bg-[linear-gradient(135deg,rgba(0,180,182,0.15),rgba(255,255,255,0.04),rgba(0,0,0,0.1))] transition-transform duration-500 group-hover:scale-[1.015]" />
           </div>
         </div>
-
-        <p className="mt-3 text-[10px] leading-relaxed tracking-wide text-white/50">
-          {item.note}
-        </p>
       </div>
     </article>
   );
@@ -219,7 +204,7 @@ export function CollectionCaseStudy({ collection }: Props) {
                 </h1>
               </div>
 
-              <div className="mt-12 space-y-6">
+              <div className="mt-12 space-y-5">
                 <p className="max-w-xl text-sm leading-relaxed tracking-wide text-white/75 sm:text-base">
                   {collection.detailSummary}
                 </p>
@@ -239,7 +224,6 @@ export function CollectionCaseStudy({ collection }: Props) {
               </div>
             </motion.div>
 
-            {/* Media Slots Box */}
             <motion.div
               variants={pageRise}
               initial="hidden"
@@ -248,29 +232,49 @@ export function CollectionCaseStudy({ collection }: Props) {
                 duration: shouldReduceMotion ? 0 : 0.55,
                 delay: 0.1,
               }}
-              className="flex flex-col justify-end rounded-[2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.04),rgba(0,0,0,0.5))] p-5 shadow-2xl"
+              className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.04),rgba(0,0,0,0.5))] p-5 shadow-2xl"
             >
-              <div className="grid gap-4 sm:grid-cols-2">
-                {collection.mediaSlots.map(
-                  (slot: CollectionItem["mediaSlots"][number]) => (
-                    <div
-                      key={slot.label}
-                      className="rounded-[1.2rem] border border-white/10 bg-black/40 p-4"
-                    >
-                      <p className="text-[9px] uppercase tracking-[0.4em] text-[var(--muted)]">
-                        {slot.label}
+              <div className="relative flex h-full min-h-[18rem] overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/20">
+                <Image
+                  src={pexelsVisuals[collection.slug as keyof typeof pexelsVisuals].cover}
+                  alt={`${collection.name} cover`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  priority={collection.slug === "concrete-ritual"}
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.22)_40%,rgba(0,0,0,0.78)_100%)]" />
+                <div className="relative flex w-full flex-col justify-between p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[0.4em] text-white/45">
+                        Collection cover
                       </p>
-                      <p className="mt-2 text-xs leading-relaxed text-white/70">
-                        {slot.caption}
+                      <p className="mt-2 max-w-[14rem] text-sm leading-relaxed text-white/75">
+                        {collection.tag}
                       </p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="text-[9px] uppercase tracking-[0.4em] text-[var(--accent-strong)]">
-                          {slot.kind}
-                        </span>
-                      </div>
                     </div>
-                  ),
-                )}
+                    <p className="text-[9px] uppercase tracking-[0.4em] text-[var(--accent-strong)]">
+                      {collection.year}
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap gap-2">
+                      {collection.palette.map((tone: string) => (
+                        <span
+                          key={tone}
+                          className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[9px] uppercase tracking-[0.3em] text-white/60"
+                        >
+                          {tone}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-[10px] uppercase tracking-[0.35em] text-white/55">
+                      {collection.heroLine}
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </section>
@@ -289,15 +293,16 @@ export function CollectionCaseStudy({ collection }: Props) {
                       key={slot.label}
                       kind={slot.kind}
                       label={slot.label}
-                      caption={slot.caption}
-                      note={slot.note}
-                      suggestedPath={slot.suggestedPath}
                       accent={
                         index === 0
                           ? "hero focus"
                           : index === 1
                             ? "reference"
                             : "final frame"
+                      }
+                      imageUrl={
+                        pexelsVisuals[collection.slug as keyof typeof pexelsVisuals]
+                          .media[index % pexelsVisuals[collection.slug as keyof typeof pexelsVisuals].media.length]
                       }
                     />
                   ),
@@ -310,10 +315,10 @@ export function CollectionCaseStudy({ collection }: Props) {
                   <div className="mb-4 flex items-center gap-3">
                     <span className="h-[1px] w-8 bg-white/20" />
                     <p className="text-[10px] uppercase tracking-[0.4em] text-[var(--muted)]">
-                      Process Breakdown
+                      Process
                     </p>
                   </div>
-                  <div className="mt-8 space-y-8">
+                  <div className="mt-8 space-y-6">
                     {collection.process.map(
                       (
                         step: CollectionItem["process"][number],
@@ -331,9 +336,6 @@ export function CollectionCaseStudy({ collection }: Props) {
                           </h2>
                           <p className="mt-2 text-xs leading-relaxed text-white/60">
                             {step.summary}
-                          </p>
-                          <p className="mt-2 text-xs leading-relaxed text-white/40 italic">
-                            {step.detail}
                           </p>
                         </div>
                       ),
@@ -359,7 +361,7 @@ export function CollectionCaseStudy({ collection }: Props) {
                   </div>
                   <div className="rounded-[1.2rem] border border-[var(--accent)]/30 bg-[linear-gradient(135deg,rgba(0,180,182,0.1),transparent)] p-5">
                     <p className="text-[9px] uppercase tracking-[0.4em] text-[var(--accent-strong)]">
-                      Signature Note
+                      Highlight
                     </p>
                     <p className="mt-3 text-sm italic leading-relaxed text-white/90">
                       &ldquo;{collection.heroLine}&rdquo;
@@ -375,21 +377,29 @@ export function CollectionCaseStudy({ collection }: Props) {
             <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.4em] text-[var(--accent-strong)]">
-                  Visual Archive
+                  Gallery
                 </p>
                 <h2 className="mt-3 font-serif text-4xl italic text-white sm:text-5xl">
-                  The Lookbook.
+                  Image-led spread.
                 </h2>
               </div>
               <p className="max-w-xs text-[10px] leading-loose tracking-[0.2em] text-[var(--muted)] uppercase">
-                Final visual output & creative direction frames.
+                Visual wall first, copy second.
               </p>
             </div>
 
             {/* Asymmetrical Grid */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-12 md:gap-6">
+            <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 sm:gap-5">
               {collection.gallery.map((item, index) => (
-                <GalleryCard key={item.title} item={item} index={index} />
+                <GalleryCard
+                  key={item.title}
+                  item={item}
+                  index={index}
+                  imageUrl={
+                    pexelsVisuals[collection.slug as keyof typeof pexelsVisuals]
+                      .media[index % pexelsVisuals[collection.slug as keyof typeof pexelsVisuals].media.length]
+                  }
+                />
               ))}
             </div>
           </section>

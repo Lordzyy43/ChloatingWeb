@@ -4,7 +4,7 @@ import "./globals.css";
 
 // Import komponen layout kita
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer"; // <-- Tambahkan ini
+import { Footer } from "@/components/layout/footer";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { portfolioProfile } from "@/data/portfolio";
 
@@ -39,6 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
+      data-scroll-behavior="smooth"
       className={`${spaceGrotesk.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--accent)] selection:text-black">

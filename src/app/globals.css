@@ -39,7 +39,17 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   min-height: 100vh;
-  /* Gradient disesuaikan dengan tone Bright Teal (RGB: 0, 180, 182) */
+
+  /* Background fix (Anti-Patahan) */
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  /* EVOLUSI 3: Memaksa font tampil setajam silet */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Gradient disesuaikan dengan tone Bright Teal */
   background-image:
     radial-gradient(
       circle at top left,
@@ -54,7 +64,7 @@ body {
     linear-gradient(180deg, #1a1e23 0%, #14171a 40%, #0d0f12 100%);
 }
 
-/* Garis grid dibuat lebih tipis dan transparan agar tidak mengganggu fokus visual */
+/* Garis grid blueprint (Techwear vibe) */
 body::before {
   content: "";
   position: fixed;
@@ -72,6 +82,18 @@ body::before {
     rgba(0, 0, 0, 0.1)
   );
   opacity: 0.35;
+  z-index: -1;
+}
+
+/* EVOLUSI 1: Cinematic Film Grain Overlay (Sangat tipis) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035; /* Bisa dinaikkan ke 0.05 kalau mau lebih 'kasar' */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 ::selection {
@@ -79,11 +101,33 @@ body::before {
   color: var(--foreground);
 }
 
-/* Sembunyikan scrollbar untuk class hide-scrollbar */
+/* Sembunyikan scrollbar untuk class hide-scrollbar (Berguna di Mobile Nav) */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* EVOLUSI 2: Custom Premium Scrollbar (Untuk Browser Utama) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #0d0f12;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  border: 3px solid #0d0f12; /* Membuat efek melayang (floating thumb) */
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 180, 182, 0.5); /* Menyala Teal saat di-hover */
+}
+
+/* Clean Global Outline (Hanya muncul saat navigasi pakai tombol TAB) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }

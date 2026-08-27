@@ -8,11 +8,15 @@ type NavbarProps = {
   tagline?: string;
 };
 
-const links = [
-  ["Home", "#home"],
-  ["Work", "#work"],
-  ["About", "#about"],
-  ["Contact", "#contact"],
+// Navigasi dibagi dua (Kiri dan Kanan) dengan nama yang lebih "Editorial"
+const leftLinks = [
+  ["Index", "#home"],
+  ["Archive", "#work"],
+] as const;
+
+const rightLinks = [
+  ["Studio", "#about"],
+  ["Inquiries", "#contact"],
 ] as const;
 
 export function Navbar({
@@ -23,29 +27,60 @@ export function Navbar({
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      // Ditambahkan max-w-7xl dan mx-auto agar posisinya sejajar presisi dengan grid konten utama
-      className="sticky top-4 z-50 mb-8 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10"
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      // Tidak lagi mengambang (pill). Kini menempel penuh di atas (flush) dengan garis bawah tipis
+      className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#060606]/80 backdrop-blur-2xl"
     >
-      <div className="flex items-center justify-between gap-4 rounded-full border border-white/10 bg-[#060606]/70 px-5 py-3 shadow-xl shadow-black/30 backdrop-blur-2xl">
-        {/* BRAND AREA */}
-        <Link href="/" className="group flex flex-col">
-          <p className="text-[9px] uppercase tracking-[0.4em] text-[var(--muted)] transition-colors duration-300 group-hover:text-white">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-5 py-4 md:grid md:h-20 md:grid-cols-3 md:flex-row md:gap-0 md:py-0 sm:px-8 lg:px-10">
+        {/* KIRI: Navigasi Kiri (Hanya muncul di Desktop) */}
+        <nav className="hidden items-center justify-start gap-8 md:flex">
+          {leftLinks.map(([label, href]) => (
+            <Link
+              key={label}
+              href={href}
+              className="group relative text-[9px] uppercase tracking-[0.4em] text-[var(--muted)] transition-colors hover:text-white"
+            >
+              {label}
+              {/* Garis bawah animasi (Micro-interaction) */}
+              <span className="absolute -bottom-2 left-0 h-[1px] w-0 bg-[var(--accent-strong)] transition-all duration-500 group-hover:w-full" />
+            </Link>
+          ))}
+        </nav>
+
+        {/* TENGAH: Brand / Masthead */}
+        <Link
+          href="/"
+          className="flex flex-col items-center justify-center text-center"
+        >
+          <p className="font-serif text-2xl italic leading-none tracking-wide text-white transition-colors duration-500 hover:text-[var(--accent-strong)] sm:text-3xl">
             {brandName}
           </p>
-          <p className="font-serif text-base tracking-[0.1em] text-[var(--accent-strong)] transition-colors duration-300 group-hover:text-white sm:text-lg">
+          <p className="mt-2 text-[8px] uppercase tracking-[0.5em] text-white/40">
             {tagline}
           </p>
         </Link>
 
-        {/* NAV LINKS */}
-        <nav className="hide-scrollbar flex items-center gap-1 overflow-x-auto text-[9px] uppercase tracking-[0.3em] text-[var(--muted)] sm:text-[10px]">
-          {links.map(([label, href]) => (
+        {/* KANAN: Navigasi Kanan (Hanya muncul di Desktop) */}
+        <nav className="hidden items-center justify-end gap-8 md:flex">
+          {rightLinks.map(([label, href]) => (
             <Link
               key={label}
-              // Hover disesuaikan agar memunculkan aksen tipis ala editorial
-              className="whitespace-nowrap rounded-full border border-transparent px-3.5 py-2 transition-all duration-300 hover:border-[var(--accent)]/40 hover:bg-[var(--accent)]/10 hover:text-white"
               href={href}
+              className="group relative text-[9px] uppercase tracking-[0.4em] text-[var(--muted)] transition-colors hover:text-white"
+            >
+              {label}
+              <span className="absolute -bottom-2 left-0 h-[1px] w-0 bg-[var(--accent-strong)] transition-all duration-500 group-hover:w-full" />
+            </Link>
+          ))}
+        </nav>
+
+        {/* MOBILE NAV: Menggabungkan semua menu, bisa di-scroll mendatar */}
+        <nav className="hide-scrollbar flex w-full items-center justify-center gap-6 overflow-x-auto pt-2 md:hidden">
+          {[...leftLinks, ...rightLinks].map(([label, href]) => (
+            <Link
+              key={label}
+              href={href}
+              className="whitespace-nowrap text-[9px] uppercase tracking-[0.3em] text-[var(--muted)] transition-colors hover:text-[var(--accent-strong)]"
             >
               {label}
             </Link>
