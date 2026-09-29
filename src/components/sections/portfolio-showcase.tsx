@@ -2,7 +2,7 @@
 
 import { MotionConfig } from "framer-motion";
 import { HeroSection } from "./hero";
-import { WorkSection } from "./work";
+import { WorkSection } from "./work-category";
 import { AboutSection } from "./about";
 import { ContactSection } from "./contact";
 

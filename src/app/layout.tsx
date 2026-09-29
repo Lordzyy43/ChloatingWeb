@@ -22,9 +22,11 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Cloating Studio | Streetwear Lookbook",
+  // REVISI 1: Nama Brand & Tagline SEO
+  title: "78Archive | Visual Direction & Lookbook",
+  // REVISI 2: Deskripsi SEO dalam Bahasa Inggris (Global Market)
   description:
-    "Digital lookbook portfolio untuk menampilkan koleksi streetwear, proses desain, dan hasil kampanye secara profesional.",
+    "A digital archive bridging raw streetwear aesthetics with rigorous production logic and compelling visual presentations.",
 };
 
 export const viewport: Viewport = {
@@ -38,17 +40,18 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="id"
+      // REVISI 3: Ubah lang menjadi "en" untuk standar internasional
+      lang="en"
       data-scroll-behavior="smooth"
       className={`${spaceGrotesk.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--accent)] selection:text-black">
         <SmoothScroll>
+          {/* Navbar otomatis membaca nama "78Archive" dari portfolioProfile.name */}
           <Navbar brandName={portfolioProfile.name} />
 
           <main className="flex-1">{children}</main>
 
-          {/* Footer dipasang di sini */}
           <Footer />
         </SmoothScroll>
       </body>

@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { CollectionCaseStudy } from "@/components/sections/collection-case-study";
-import { collections, getCollection } from "@/data/portfolio";
+import { CollectionCaseStudy } from "@/components/sections/work-detail";
+// REVISI: Pastikan kita mengimpor portfolioProfile
+import { collections, getCollection, portfolioProfile } from "@/data/portfolio";
 
 type Params = Promise<{ slug: string }>;
 
@@ -16,22 +17,23 @@ export async function generateMetadata({
 
   if (!collection) {
     return {
-      title: "Archive Not Found | Cloating Studio",
+      // Menggunakan nama dinamis jika URL salah
+      title: `Archive Not Found | ${portfolioProfile.name}`,
     };
   }
 
-  // Membuat meta title dan description otomatis menyesuaikan data koleksi
+  // Membuat meta title dan description otomatis menyesuaikan data koleksi dan nama studio
   return {
-    title: `${collection.name} — Archive | Cloating Studio`,
+    title: `${collection.name} — Archive | ${portfolioProfile.name}`,
     description: collection.detailSummary,
     openGraph: {
-      title: `${collection.name} — Cloating Studio`,
+      title: `${collection.name} — ${portfolioProfile.name}`,
       description: collection.detailSummary,
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${collection.name} | Cloating Studio`,
+      title: `${collection.name} | ${portfolioProfile.name}`,
       description: collection.detailSummary,
     },
   };
